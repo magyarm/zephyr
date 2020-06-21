@@ -1,0 +1,142 @@
+/ {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	compatible = "kendryte,k210";
+	model = "kendryte,k210";
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		cpu@0 {
+			clock-frequency = <0>;
+			compatible = "kendryte,k210", "riscv";
+			device_type = "cpu";
+			i-cache-block-size = <64>;
+			i-cache-sets = <128>;
+			i-cache-size = <16384>;
+			reg = <0>;
+			riscv,isa = "rv64imafdc";
+			status = "okay";
+			timebase-frequency = <32768>;
+			hlic: interrupt-controller {
+				#interrupt-cells = <1>;
+				compatible = "riscv,cpu-intc";
+				interrupt-controller;
+			};
+		};
+	};
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "kendryte,k210","simple-bus";
+		ranges;
+		clint: clint@2000000 {
+			compatible = "riscv,clint0";
+			interrupts-extended = <&hlic 3 &hlic 7>;
+			reg = <0x2000000 0x10000>;
+			reg-names = "control";
+		};
+		gpiohs: gpiohs@38001000 {
+			compatible = "kendryte,gpiohs";
+			gpio-controller;
+			reg = <0x38001000 0x10000>;
+			reg-names = "control";
+			#gpio-cells = <2>;
+			status = "disabled";
+		};
+		dma: dma@50000000 {
+			compatible = "kendryte,dma";
+			reg = <0x50000000 0x10000>;
+			reg-names = "control";
+			label = "dma";
+			status = "disabled";
+		};
+		gpio: gpio@50200000 {
+			compatible = "kendryte,gpio";
+			gpio-controller;
+			reg = <0x50200000 0x10000>;
+			reg-names = "control";
+			#gpio-cells = <2>;
+			status = "disabled";
+		};
+		pinmux: pinmux@502b0000 {
+			compatible = "kendryte,pinmux";
+			reg = <0x502b0000 0x10000>;
+			label = "pinmux";
+		};
+		plic: interrupt-controller@c000000 {
+			#interrupt-cells = <1>;
+			compatible = "riscv,plic0";
+			interrupt-controller;
+			interrupts-extended = <&hlic 11>;
+			reg = <0xc000000 0x4000000>;
+			reg-names = "control";
+			riscv,max-priority = <7>;
+			riscv,ndev = <52>;
+		};
+		spi0: spi@52000000 {
+			compatible = "kendryte,spi";
+			reg = <0x52000000 0x10000>;
+			label = "spi_0";
+		};
+		spi1: spi@53000000 {
+			compatible = "kendryte,spi";
+			reg = <0x53000000 0x10000>;
+			label = "spi_1";
+		};
+		sysctl: clock-controller@50440000 {
+			compatible = "kendryte,sysctl";
+			reg = <0x50440000 0x10000>;
+			label = "sysctl";
+			clock-controller;
+		};
+		uart1: serial@50210000 {
+			compatible = "kendryte,uart";
+			reg = <0x50210000 0x10000>;
+			reg-names = "control";
+			label = "uart_1";
+			status = "disabled";
+		};
+		uart2: serial@50220000 {
+			compatible = "kendryte,uart";
+			reg = <0x50220000 0x10000>;
+			reg-names = "control";
+			label = "uart_2";
+			status = "disabled";
+		};
+		uart3: serial@50230000 {
+			compatible = "kendryte,uart";
+			reg = <0x50230000 0x10000>;
+			reg-names = "control";
+			label = "uart_3";
+			status = "disabled";
+		};
+		i2s0: i2s@50250000 {
+			compatible = "kendryte,i2s";
+			reg = <0x50250000 0x10000>;
+			label = "i2s_0";
+			status = "disabled";
+		};
+		i2s1: i2s@50260000 {
+			compatible = "kendryte,i2s";
+			reg = <0x50260000 0x10000>;
+			label = "i2s_1";
+			status = "disabled";
+		};
+		i2s2: i2s@50270000 {
+			compatible = "kendryte,i2s";
+			reg = <0x50270000 0x10000>;
+			label = "i2s_2";
+			status = "disabled";
+		};
+		wdt0: watchdog@50400000 {
+			compatible = "kendryte,wdt";
+			reg = <0x50400000 0x10000>;
+			label = "wdt_0";
+		};
+		wdt1: watchdog@50410000 {
+			compatible = "kendryte,wdt";
+			reg = <0x50410000 0x10000>;
+			label = "wdt_1";
+		};
+	};
+};
