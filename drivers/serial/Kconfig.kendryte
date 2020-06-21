@@ -1,0 +1,34 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+menuconfig UART_KENDRYTE
+	bool "Kendryte serial driver"
+	depends on SOC_RISCV64_K210
+	select SERIAL_HAS_DRIVER
+	help
+	  This option enables the Kendryte serial driver.
+
+# ---------- Port 1 ----------
+
+menuconfig UART_KENDRYTE_PORT_1
+	bool "Enable KENDRYTE Port 1"
+	depends on UART_KENDRYTE
+	help
+	  This tells the driver to configure the UART1 port at boot,.
+
+# ---------- Port 2 ----------
+
+menuconfig UART_KENDRYTE_PORT_2
+	bool "Enable KENDRYTE Port 2"
+	depends on UART_KENDRYTE
+	help
+	  This tells the driver to configure the UART2 port at boot.
+
+# ---------- Port 3 ----------
+
+menuconfig UART_KENDRYTE_PORT_3
+	bool "Enable KENDRYTE Port 3"
+	depends on UART_KENDRYTE
+	help
+	  This tells the driver to configure the UART3 port at boot.
