@@ -3,35 +3,22 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 #
----
-title: KENDRYTE UART
-id: kendryte,uart1
-version: 0.1
-
 description: >
     This binding gives a base representation of the KENDRYTE UART
 
-inherits:
-    !include uart.yaml
+compatible: "kendryte,uart"
+
+include: uart-controller.yaml
 
 properties:
-    compatible:
-      type: string
-      category: required
-      description: compatible strings
-      constraint: "kendryte,uart"
-      generation: define
-
     reg:
       type: array
       description: mmio register space
-      generation: define
-      category: required
+      required: true
 
     interrupts:
       type: array
-      category: required
       description: required interrupts
-      generation: define
+      required: true
 
 ...
