@@ -54,4 +54,6 @@ source "drivers/pinmux/Kconfig.xec"
 
 source "drivers/pinmux/Kconfig.hsdk"
 
+source "drivers/pinmux/Kconfig.kendryte"
+
 endif # PINMUX
