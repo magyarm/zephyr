@@ -32,3 +32,4 @@ zephyr_library_sources_ifdef(CONFIG_GPIO_LITEX      gpio_litex.c)
 zephyr_library_sources_ifdef(CONFIG_GPIO_SHELL      gpio_shell.c)
 
 zephyr_library_sources_ifdef(CONFIG_USERSPACE   gpio_handlers.c)
+zephyr_library_sources_ifdef(CONFIG_GPIO_KENDRYTE   gpio_kendryte.c)
