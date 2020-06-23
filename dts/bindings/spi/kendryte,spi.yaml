@@ -1,0 +1,24 @@
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+description: This is a representation of the Kendryte SPI
+
+compatible: "kendryte,spi"
+
+include: spi-controller.yaml
+
+properties:
+    compatible:
+      type: string-array
+      required: true
+      description: compatible strings
+
+    reg:
+      type: array
+      description: mmio register space
+      required: true
+
+    label:
+      type: string
+      required: true
+      description: Human readable string describing the device (used by Zephyr for API name)
