@@ -10,15 +10,12 @@ include: dma-controller.yaml
 properties:
     compatible:
       type: string-array
-      required: true
       description: compatible strings
 
     reg:
       type: array
       description: mmio register space
-      required: true
 
     label:
       type: string
-      required: true
       description: Human readable string describing the device (used by Zephyr for API name)

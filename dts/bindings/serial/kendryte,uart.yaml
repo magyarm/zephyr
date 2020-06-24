@@ -14,11 +14,7 @@ properties:
     reg:
       type: array
       description: mmio register space
-      required: true
 
     interrupts:
       type: array
       description: required interrupts
-      required: true
-
-...
