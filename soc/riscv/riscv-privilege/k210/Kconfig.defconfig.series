@@ -1,4 +1,4 @@
-if SOC_SERIES_RISCV64_K210
+if SOC_SERIES_RISCV_K210
 
 config SOC_SERIES
 	string
@@ -44,4 +44,4 @@ config RISCV_RAM_SIZE
 	hex
 	default 0x600000
 
-endif # SOC_SERIES_RISCV64_K210
+endif # SOC_SERIES_RISCV_K210

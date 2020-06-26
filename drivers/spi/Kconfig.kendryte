@@ -5,7 +5,7 @@
 
 menuconfig SPI_KENDRYTE
 	bool "Enable KENDRYTE SPI driver"
-	depends on SPI && SOC_RISCV64_K210
+	depends on SPI && SOC_RISCV_K210
 	select HAS_DTS_SPI
 	help
 	  SPI driver for KENDRYTE SoCs.

@@ -4,7 +4,7 @@
 
 menuconfig GPIO_KENDRYTE
 	bool "Kendryte K210 GPIO driver"
-	depends on GPIO && SOC_RISCV64_K210
+	depends on GPIO && SOC_RISCV_K210
 	select HAS_DTS_GPIO
 	help
 	  Enable driver for the Kendryte K210 GPIO controller.
@@ -21,7 +21,7 @@ endif # GPIO_KENDRYTE
 
 menuconfig GPIOHS_KENDRYTE
 	bool "Kendryte K210 GPIO HS driver"
-	depends on GPIO && SOC_RISCV64_K210
+	depends on GPIO && SOC_RISCV_K210
 	select HAS_DTS_GPIO
 	help
 	  Enable driver for the Kendryte K210 GPIO HS controller.

@@ -42,8 +42,8 @@ config VEXRISCV_LITEX_IRQ
 config PLIC_KENDRYTE
 	bool "Platform Level Interrupt Controller (PLIC) for Kendryte SoC"
 	default y
-	depends on SOC_RISCV64_K210
-	select RISCV_HAS_PLIC
+	depends on SOC_RISCV_K210
+	select PLIC
 	help
 	  Platform Level Interrupt Controller provides support
 	  for external interrupt lines defined by the RISC-V SoC;

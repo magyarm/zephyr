@@ -6,8 +6,8 @@
  * @file SoC configuration macros for the SiFive Freedom processor
  */
 
-#ifndef __RISCV64_K210_SOC_H_
-#define __RISCV64_K210_SOC_H_
+#ifndef __RISCV_K210_SOC_H_
+#define __RISCV_K210_SOC_H_
 
 #include <soc_common.h>
 
@@ -146,4 +146,4 @@
 #define IRQ_HOST     13
 
 
-#endif /* __RISCV64_K210_SOC_H_ */
+#endif /* __RISCV_K210_SOC_H_ */

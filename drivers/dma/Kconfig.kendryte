@@ -5,6 +5,6 @@
 
 menuconfig DMA_KENDRYTE
 	bool "Enable KENDRYTE DMA driver"
-	depends on SOC_RISCV64_K210
+	depends on SOC_RISCV_K210
 	help
 	  DMA driver for KENDRYTE SoCs.

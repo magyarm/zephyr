@@ -4,7 +4,7 @@
 
 menuconfig UART_KENDRYTE
 	bool "Kendryte serial driver"
-	depends on SOC_RISCV64_K210
+	depends on SOC_RISCV_K210
 	select SERIAL_HAS_DRIVER
 	help
 	  This option enables the Kendryte serial driver.
