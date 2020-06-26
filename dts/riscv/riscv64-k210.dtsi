@@ -47,6 +47,7 @@
 			compatible = "kendryte,dma";
 			reg = <0x50000000 0x10000>;
 			reg-names = "control";
+			#dma-cells = <5>;
 			label = "dma";
 			status = "disabled";
 		};
@@ -76,11 +77,15 @@
 		spi0: spi@52000000 {
 			compatible = "kendryte,spi";
 			reg = <0x52000000 0x10000>;
+			#address-cells = <1>;
+			#size-cells = <0>;
 			label = "spi_0";
 		};
 		spi1: spi@53000000 {
 			compatible = "kendryte,spi";
 			reg = <0x53000000 0x10000>;
+			#address-cells = <1>;
+			#size-cells = <0>;
 			label = "spi_1";
 		};
 		sysctl: clock-controller@50440000 {
