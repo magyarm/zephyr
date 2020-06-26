@@ -7,13 +7,13 @@
 #include <kernel.h>
 #include <arch/cpu.h>
 
-#include <misc/__assert.h>
-#include <board.h>
+#include <sys/__assert.h>
+#include <soc.h>
 #include <device.h>
 #include <init.h>
 #include <math.h>
 
-#include <sys_io.h>
+#include <sys/sys_io.h>
 
 #include <clock_control.h>
 #include <clock_control/kendryte_clock.h>

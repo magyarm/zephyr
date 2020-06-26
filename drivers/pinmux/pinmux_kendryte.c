@@ -6,12 +6,12 @@
 
 #include <errno.h>
 #include <device.h>
-#include <pinmux.h>
+#include <drivers/pinmux.h>
 #include <soc.h>
-#include <clock_control.h>
+#include <drivers/clock_control.h>
 
-#include <clock_control/kendryte_clock.h>
-#include <pinmux/pinmux_kendryte.h>
+#include <drivers/clock_control/kendryte_clock.h>
+#include <drivers/pinmux/pinmux_kendryte.h>
 
 struct pinmux_kendryte_config {
 	u64_t base;
