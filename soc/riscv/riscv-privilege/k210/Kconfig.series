@@ -5,7 +5,7 @@
 
 config SOC_SERIES_RISCV_K210
 	bool "K210 SOC implementation"
-	depends on RISCV64
+	select RISCV
 	select SOC_FAMILY_RISCV_PRIVILEGE
 	select CLOCK_CONTROL_KENDRYTE if CLOCK_CONTROL
 	help
