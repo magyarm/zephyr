@@ -3,10 +3,10 @@
  */
 
 #include <init.h>
-#include <pinmux.h>
-#include <board.h>
+#include <drivers/pinmux.h>
+#include "board.h"
 
-#include <pinmux/pinmux_kendryte.h>
+#include <drivers/pinmux/pinmux_kendryte.h>
 
 static int kendryte_pinmux_init(struct device *dev)
 {

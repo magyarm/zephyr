@@ -10,11 +10,12 @@
 #include <kernel.h>
 #include <device.h>
 #include <soc.h>
-#include <gpio.h>
-#include <misc/util.h>
-#include <clock_control.h>
+#include <sys/util.h>
 
-#include <clock_control/kendryte_clock.h>
+#include <drivers/clock_control.h>
+#include <drivers/clock_control/kendryte_clock.h>
+#include <drivers/gpio.h>
+
 #include "gpio_utils.h"
 
 struct gpio_kendryte_t {

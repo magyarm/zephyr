@@ -2,17 +2,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <clock_control.h>
 #include <device.h>
-#include <dma.h>
 #include <errno.h>
 #include <init.h>
 #include <stdio.h>
 #include <string.h>
-#include <misc/util.h>
+#include <sys/util.h>
 
-#include <clock_control/kendryte_clock.h>
-#include <dma/kendryte_dma.h>
+#include <drivers/clock_control.h>
+#include <drivers/clock_control/kendryte_clock.h>
+#include <drivers/dma.h>
+
+#include "kendryte_dma.h"
 
 #define writeq(v, addr)	((*(volatile u64_t *)(addr)) = (v))
 #define readq(addr) (*(volatile u64_t *)(addr))

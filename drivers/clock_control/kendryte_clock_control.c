@@ -15,8 +15,8 @@
 
 #include <sys/sys_io.h>
 
-#include <clock_control.h>
-#include <clock_control/kendryte_clock.h>
+#include <drivers/clock_control.h>
+#include <drivers/clock_control/kendryte_clock.h>
 
 struct kendryte_clock_control_config {
 	u64_t base;

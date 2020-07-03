@@ -2,21 +2,18 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#include <misc/util.h>
+#include <sys/util.h>
 #include <kernel.h>
-#include <board.h>
-#include <dma.h>
-#include <dma/kendryte_dma.h>
 #include <errno.h>
-#include <spi.h>
+#include <drivers/spi.h>
 #include <string.h>
 #include <toolchain.h>
 
-#include <clock_control/kendryte_clock.h>
-#include <clock_control.h>
+#include <drivers/clock_control/kendryte_clock.h>
+#include <drivers/clock_control.h>
+#include <drivers/dma.h>
 
 #include "spi_context.h"
-#include "spi_kendryte.h"
 
 #define DEV_CFG(dev)						\
 (const struct spi_kendryte_cfg * const)(dev->config->config_info)

@@ -8,11 +8,10 @@
 
 #include <kernel.h>
 #include <arch/cpu.h>
-#include <uart.h>
-#include <board.h>
-#include <clock_control.h>
 
-#include <clock_control/kendryte_clock.h>
+#include <drivers/clock_control.h>
+#include <drivers/clock_control/kendryte_clock.h>
+#include <drivers/uart.h>
 
 #define RXDATA_MASK    0xFF        /* Receive Data Mask */
 
