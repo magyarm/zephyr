@@ -5,6 +5,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#define DT_DRV_COMPAT kendryte_plic_1_0_0
+
 /**
  * @brief Platform Level Interrupt Controller (PLIC) driver
  *        for RISC-V processors
@@ -13,8 +15,14 @@
 #include <kernel.h>
 #include <arch/cpu.h>
 #include <init.h>
+#include <soc.h>
 #include "plic_kendryte.h"
 #include <sw_isr_table.h>
+
+#define PLIC_MAX_PRIO	DT_INST_PROP(0, riscv_max_priority)
+#define PLIC_BASE_ADDRESS	DT_INST_REG_ADDR_BY_NAME(0, prio)
+#define PLIC_IRQ_EN	DT_INST_REG_ADDR_BY_NAME(0, irq_en)
+#define PLIC_REG	DT_INST_REG_ADDR_BY_NAME(0, reg)
 
 static volatile plic_t* const plic = (volatile plic_t*)PLIC_BASE_ADDRESS;
 
@@ -36,17 +44,16 @@ static int save_irq;
 void riscv_plic_irq_enable(u32_t irq)
 {
 	u32_t key;
-	u32_t plic_irq = irq - RISCV_MAX_GENERIC_IRQ;
 
 	key = irq_lock();
 	
 	unsigned long core_id = current_coreid();
 	/* Get current enable bit array by IRQ number */
-	uint32_t current = plic->target_enables.target[core_id].enable[plic_irq / 32];
+	uint32_t current = plic->target_enables.target[core_id].enable[irq / 32];
 	/* Set enable bit in enable bit array */
-	current |= (uint32_t)1 << (plic_irq % 32);
+	current |= (uint32_t)1 << (irq % 32);
 	/* Write back the enable bit array */
-	plic->target_enables.target[core_id].enable[plic_irq / 32] = current;
+	plic->target_enables.target[core_id].enable[irq / 32] = current;
 	
 	irq_unlock(key);
 }
@@ -67,17 +74,16 @@ void riscv_plic_irq_enable(u32_t irq)
 void riscv_plic_irq_disable(u32_t irq)
 {
 	u32_t key;
-	u32_t plic_irq = irq - RISCV_MAX_GENERIC_IRQ;
 
 	key = irq_lock();
 
 	unsigned long core_id = current_coreid();
 	/* Get current enable bit array by IRQ number */
-	uint32_t current = plic->target_enables.target[core_id].enable[plic_irq / 32];
+	uint32_t current = plic->target_enables.target[core_id].enable[irq / 32];
 	/* Clear enable bit in enable bit array */
-	current &= ~((uint32_t)1 << (plic_irq % 32));
+	current &= ~((uint32_t)1 << (irq % 32));
 	/* Write back the enable bit array */
-	plic->target_enables.target[core_id].enable[plic_irq / 32] = current;
+	plic->target_enables.target[core_id].enable[irq / 32] = current;
 	
 	irq_unlock(key);
 }
@@ -93,12 +99,10 @@ void riscv_plic_irq_disable(u32_t irq)
  */
 int riscv_plic_irq_is_enabled(u32_t irq)
 {
-	u32_t plic_irq = irq - RISCV_MAX_GENERIC_IRQ;
-
 	unsigned long core_id = current_coreid();
 	/* Get current enable bit array by IRQ number */
-	uint32_t current = plic->target_enables.target[core_id].enable[plic_irq / 32];
-	return !!(current & ((uint32_t)1 << (plic_irq % 32)));
+	uint32_t current = plic->target_enables.target[core_id].enable[irq / 32];
+	return !!(current & ((uint32_t)1 << (irq % 32)));
 }
 
 /**
@@ -114,12 +118,8 @@ int riscv_plic_irq_is_enabled(u32_t irq)
  */
 void riscv_plic_set_priority(u32_t irq, u32_t priority)
 {
-	/* Can set priority only for PLIC-specific interrupt line */
-	if (irq <= RISCV_MAX_GENERIC_IRQ)
-		return;
-
-	if (priority > PLIC_MAX_PRIORITY)
-		priority = PLIC_MAX_PRIORITY;
+	if (priority > PLIC_MAX_PRIO)
+		priority = PLIC_MAX_PRIO;
 
 	/* Set interrupt priority by IRQ number */
 	plic->source_priorities.priority[irq] = priority;
