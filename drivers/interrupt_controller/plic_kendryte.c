@@ -156,20 +156,19 @@ static void plic_irq_handler(void *arg)
 	 * A call to _irq_spurious will not return.
 	 */
 	if (irq == 0 || irq >= PLIC_IRQS)
-		_irq_spurious(NULL);
+		z_irq_spurious(NULL);
 
         /* Get primitive IRQ threshold */
         uint32_t int_threshold = plic->targets.target[core_id].priority_threshold;
         /* Set new IRQ threshold = current IRQ threshold */
-        plic->targets.target[core_id].priority_threshold =
-		plic->source_priorities.priority[irq];
+        plic->targets.target[core_id].priority_threshold = plic->source_priorities.priority[irq];
         /* Disable software interrupt and timer interrupt */
         clear_csr(mie, MIP_MTIP | MIP_MSIP);
         /* Enable global interrupt */
         set_csr(mstatus, MSTATUS_MIE);
 
 	/* Call the corresponding IRQ handler in _sw_isr_table */
-	ite = (struct _isr_table_entry *)&_sw_isr_table[irq + RISCV_MAX_GENERIC_IRQ];
+	ite = (struct _isr_table_entry *)&_sw_isr_table[irq];
 	ite->isr(ite->arg);
 
 	save_irq = irq;

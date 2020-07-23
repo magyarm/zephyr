@@ -7,7 +7,7 @@
 
 #include <soc.h>
 
-#define PLIC_IRQS        (CONFIG_NUM_IRQS - RISCV_MAX_GENERIC_IRQ)
+#define PLIC_IRQS        (CONFIG_NUM_IRQS - CONFIG_2ND_LVL_ISR_TBL_OFFSET)
 #define PLIC_EN_SIZE     ((PLIC_IRQS >> 5) + 1)
 
 /**
