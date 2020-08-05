@@ -92,6 +92,7 @@
 		sysctl: clock-controller@50440000 {
 			compatible = "kendryte,sysctl";
 			reg = <0x50440000 0x10000>;
+			reg-names = "sysctl_base";
 			label = "sysctl";
 			clock-controller;
 		};

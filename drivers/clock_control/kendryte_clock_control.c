@@ -4,6 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#define DT_DRV_COMPAT kendryte_sysctl
+
 #include <kernel.h>
 #include <arch/cpu.h>
 
@@ -18,8 +20,20 @@
 #include <drivers/clock_control.h>
 #include <drivers/clock_control/kendryte_clock.h>
 
+/*
+ * TODO:Figure out C Library function usage in Zephyr
+ */
+extern double ceil (double);
+extern double fabs (double);
+extern double floor (double);
+extern double rint (double);
+
+#define KENDRYTE_PLL_SLEEP   K_MSEC(1)
+
+#define CONFIG_KENDRYTE_SYSCTL_BASE_ADDRESS DT_INST_REG_ADDR_BY_NAME(0,sysctl_base)
+
 struct kendryte_clock_control_config {
-	u64_t base;
+	u32_t base;
 };
 
 u32_t kendryte_clock_source_get_freq(volatile kendryte_sysctl *sysctl,
@@ -153,7 +167,7 @@ static void sysctl_reset_ctl(volatile kendryte_sysctl *sysctl,
 void sysctl_reset(struct device *dev, sysctl_reset_t reset)
 {
 	const struct kendryte_clock_control_config *info =
-					dev->config->config_info;
+					dev->config_info;
 	volatile kendryte_sysctl *sysctl = (volatile kendryte_sysctl *)info->base;
 
 	sysctl_reset_ctl(sysctl, reset, 1);
@@ -164,7 +178,7 @@ int sysctl_dma_select(struct device *dev, sysctl_dma_channel_t channel,
 		sysctl_dma_select_t select)
 {
 	const struct kendryte_clock_control_config *info =
-					dev->config->config_info;
+					dev->config_info;
 	volatile kendryte_sysctl *sysctl = (volatile kendryte_sysctl *)info->base;
 
 	sysctl_dma_sel0_t dma_sel0;
@@ -216,7 +230,7 @@ static int kendryte_clock_bus_enable(struct device *dev,
 				   u8_t enable)
 {
 	const struct kendryte_clock_control_config *info =
-					dev->config->config_info;
+					dev->config_info;
 	volatile kendryte_sysctl *sysctl = (volatile kendryte_sysctl *)info->base;
 	u32_t subsys = POINTER_TO_UINT(sub_system);
 
@@ -279,7 +293,7 @@ static int kendryte_device_bus_enable(struct device *dev,
 				    u8_t enable)
 {
 	const struct kendryte_clock_control_config *info =
-					dev->config->config_info;
+					dev->config_info;
 	volatile kendryte_sysctl *sysctl = (volatile kendryte_sysctl *)info->base;
 	u32_t subsys = POINTER_TO_UINT(sub_system);
 
@@ -940,13 +954,13 @@ u32_t kendryte_pll_set_freq(volatile kendryte_sysctl *sysctl, kendryte_pll_t pll
     /* 5. Power on PLL */
     v_pll_t->pll_pwrd = 1;
     /* wait >100ns */
-    k_sleep(1);
+    k_sleep(KENDRYTE_PLL_SLEEP);
 
     /* 6. Reset PLL then Release Reset*/
     v_pll_t->pll_reset = 0;
     v_pll_t->pll_reset = 1;
     /* wait >100ns */
-    k_sleep(1);
+    k_sleep(KENDRYTE_PLL_SLEEP);
     v_pll_t->pll_reset = 0;
 
     /* 7. Get lock status, wait PLL stable */
@@ -1048,7 +1062,7 @@ int kendryte_clock_set_threshold(struct device *dev,
 			       kendryte_threshold_t thres, int threshold)
 {
 	const struct kendryte_clock_control_config *info =
-					dev->config->config_info;
+					dev->config_info;
 	volatile kendryte_sysctl *sysctl = (volatile kendryte_sysctl *)info->base;
 
 	switch (thres) {
@@ -1606,7 +1620,7 @@ static int kendryte_clock_control_get_rate(struct device *dev,
 					 u32_t *rate)
 {
 	const struct kendryte_clock_control_config *info =
-					dev->config->config_info;
+					dev->config_info;
 	volatile kendryte_sysctl *sysctl = (volatile kendryte_sysctl *)info->base;
 	u32_t subsys = POINTER_TO_UINT(sub_system);
 

@@ -145,5 +145,6 @@
 #define IRQ_COP      12
 #define IRQ_HOST     13
 
+#define CONFIG_KENDRYTE_SYSCTL_NAME "sysctl"
 
 #endif /* __RISCV_K210_SOC_H_ */
