@@ -2,6 +2,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#define DT_DRV_COMPAT kendryte_pinmux
+
 #include <init.h>
 #include <drivers/pinmux.h>
 #include "board.h"

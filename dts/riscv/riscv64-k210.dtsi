@@ -62,6 +62,7 @@
 		pinmux: pinmux@502b0000 {
 			compatible = "kendryte,pinmux";
 			reg = <0x502b0000 0x10000>;
+			reg-names = "pinmux_base";
 			label = "pinmux";
 		};
 		plic: interrupt-controller@c000000 {

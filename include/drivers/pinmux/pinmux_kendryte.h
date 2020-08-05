@@ -831,5 +831,7 @@ typedef struct _kendryte_fpioa_t
     /*!< FPIOA GPIO multiplexer tie */
 } __attribute__((packed, aligned(4))) kendryte_fpioa_t;
 
+#define CONFIG_KENDRYTE_PINMUX_NAME "pinmux"
+
 #endif /* _DRIVER_FPIOA_H */
 

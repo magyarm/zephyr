@@ -4,6 +4,8 @@
  *        Copyright 2018 Canaan Inc.
  */
 
+#define DT_DRV_COMPAT kendryte_pinmux
+
 #include <errno.h>
 #include <device.h>
 #include <drivers/pinmux.h>
@@ -13,13 +15,15 @@
 #include <drivers/clock_control/kendryte_clock.h>
 #include <drivers/pinmux/pinmux_kendryte.h>
 
+#define KENDRYTE_PINMUX_BASE_ADDR   DT_INST_REG_ADDR_BY_NAME(0,pinmux_base)
+
 struct pinmux_kendryte_config {
-	u64_t base;
+	u32_t base;
 };
 
 #define DEV_CFG(dev)					\
 	((const struct pinmux_kendryte_config * const)	\
-	 (dev)->config->config_info)
+	 (dev)->config_info)
 
 #define DEV_PINMUX(dev)						\
 	((volatile kendryte_fpioa_t *)(DEV_CFG(dev))->base)
@@ -5274,7 +5278,7 @@ static int pinmux_kendryte_init(struct device *dev)
 	int i = 0;
 
 	/* Enable fpioa clock in system controller */
-	struct device *clk = device_get_binding(CONFIG_KENDRYTE_SYSCTL_NAME);
+	struct device *clk = device_get_binding("sysctl");
 
 	/* enable clock */
 	clock_control_on(clk, (void *)KENDRYTE_CLOCK_FPIOA);
@@ -5306,7 +5310,7 @@ static const struct pinmux_driver_api pinmux_kendryte_driver_api = {
 };
 
 static const struct pinmux_kendryte_config pinmux_kendryte_0_config = {
-	.base = CONFIG_KENDRYTE_PINMUX_BASE_ADDR,
+	.base = KENDRYTE_PINMUX_BASE_ADDR,
 };
 
 DEVICE_AND_API_INIT(pinmux_kendryte, CONFIG_KENDRYTE_PINMUX_NAME,
