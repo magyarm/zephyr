@@ -146,5 +146,6 @@
 #define IRQ_HOST     13
 
 #define CONFIG_KENDRYTE_SYSCTL_NAME "sysctl"
+#define CONFIG_KENDRYTE_DMA_NAME "dma"
 
 #endif /* __RISCV_K210_SOC_H_ */

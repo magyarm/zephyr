@@ -46,7 +46,7 @@
 		dma: dma@50000000 {
 			compatible = "kendryte,dma";
 			reg = <0x50000000 0x10000>;
-			reg-names = "control";
+			reg-names = "dma_base";
 			#dma-cells = <5>;
 			label = "dma";
 			status = "disabled";

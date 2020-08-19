@@ -2,6 +2,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+#define DT_DRV_COMPAT kendryte_dma
+
 #include <device.h>
 #include <errno.h>
 #include <init.h>
@@ -15,11 +17,13 @@
 
 #include "kendryte_dma.h"
 
+#define CONFIG_KENDRYTE_DMA_BASE_ADDR DT_INST_REG_ADDR_BY_NAME(0,dma_base)
+
 #define writeq(v, addr)	((*(volatile u64_t *)(addr)) = (v))
 #define readq(addr) (*(volatile u64_t *)(addr))
 
 struct dmac_kendryte_cfg {
-	u64_t base;
+	u32_t base;
 	u32_t clock_id;
 };
 
@@ -29,7 +33,7 @@ struct dmac_kendryte_data {
 
 #define DEV_CFG(dev)					\
 	((const struct dmac_kendryte_cfg * const)	\
-	 (dev)->config->config_info)
+	 (dev)->config_info)
 
 #define DEV_DMA(dev)					\
 	((volatile dmac_t *)(DEV_CFG(dev))->base)
@@ -218,7 +222,6 @@ static int dmac_kendryte_config(struct device *dev, u32_t id,
 	dmac_sw_hw_hs_select_t src_type, dest_type;
 	dmac_ch_cfg_u_t cfg_u;
 	dmac_ch_ctl_u_t ctl;
-	int ret;
 
 	if (id >= DMAC_CHANNEL_MAX) {
 		printk("Invalid DMA channel\n");
