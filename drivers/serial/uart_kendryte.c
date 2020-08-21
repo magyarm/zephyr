@@ -6,9 +6,11 @@
  * @brief UART driver for the SiFive Freedom Processor
  */
 
+#define DT_DRV_COMPAT kendryte_uart
+
 #include <kernel.h>
 #include <arch/cpu.h>
-
+#include <soc.h>
 #include <drivers/clock_control.h>
 #include <drivers/clock_control/kendryte_clock.h>
 #include <drivers/uart.h>
@@ -77,7 +79,7 @@ struct uart_kendryte_regs_t
 };
 
 struct uart_kendryte_device_config {
-	u64_t	port;
+	u32_t	port;
 	u32_t	sys_clk_freq;
 	u32_t	baud_rate;
 	u32_t	clock_id;
@@ -85,7 +87,7 @@ struct uart_kendryte_device_config {
 
 #define DEV_CFG(dev)						\
 	((const struct uart_kendryte_device_config * const)	\
-	 (dev)->config->config_info)
+	 (dev)->config_info)
 #define DEV_UART(dev)						\
 	((struct uart_kendryte_regs_t *)(DEV_CFG(dev))->port)
 
@@ -99,7 +101,7 @@ struct uart_kendryte_device_config {
  *
  * @return Sent character
  */
-static unsigned char uart_kendryte_poll_out(struct device *dev,
+static void uart_kendryte_poll_out(struct device *dev,
 					 unsigned char c)
 {
 	volatile struct uart_kendryte_regs_t *uart = DEV_UART(dev);
@@ -109,8 +111,6 @@ static unsigned char uart_kendryte_poll_out(struct device *dev,
 //	while (!(uart->LSR & TXDATA_FULL));
 
 	uart->THR = (char)c;
-
-	return c;
 }
 
 /**
@@ -178,6 +178,23 @@ static const struct uart_driver_api uart_kendryte_driver_api = {
 	.err_check        = NULL,
 };
 
+#ifdef CONFIG_UART_KENDRYTE_PORT_0
+
+static const struct uart_kendryte_device_config uart_kendryte_dev_cfg_0 = {
+	.port		= CONFIG_KENDRYTE_UART_0_BASE_ADDR,
+	.sys_clk_freq	= CONFIG_KENDRYTE_UART_0_CLK_FREQ,
+	.baud_rate	= CONFIG_KENDRYTE_UART_0_CURRENT_SPEED,
+	.clock_id	= KENDRYTE_CLOCK_UART0,
+};
+
+DEVICE_AND_API_INIT(uart_kendryte_0, CONFIG_KENDRYTE_UART_0_LABEL,
+		    uart_kendryte_init,
+		    NULL, &uart_kendryte_dev_cfg_0,
+		    PRE_KERNEL_1, CONFIG_KERNEL_INIT_PRIORITY_DEVICE,
+		    (void *)&uart_kendryte_driver_api);
+
+#endif /* CONFIG_UART_KENDRYTE_PORT_0 */
+
 #ifdef CONFIG_UART_KENDRYTE_PORT_1
 
 static const struct uart_kendryte_device_config uart_kendryte_dev_cfg_1 = {
@@ -198,33 +215,16 @@ DEVICE_AND_API_INIT(uart_kendryte_1, CONFIG_KENDRYTE_UART_1_LABEL,
 #ifdef CONFIG_UART_KENDRYTE_PORT_2
 
 static const struct uart_kendryte_device_config uart_kendryte_dev_cfg_2 = {
-	.port		= CONFIG_KENDRYTE_UART_2_BASE_ADDR,
-	.sys_clk_freq	= CONFIG_KENDRYTE_UART_2_CLK_FREQ,
-	.baud_rate	= CONFIG_KENDRYTE_UART_2_CURRENT_SPEED,
+	.port		= DT_INST_REG_ADDR_BY_NAME(DT_NODELABEL(uart_2),control),//DT_INST_REG_ADDR(3),
+	.sys_clk_freq	= DT_INST_PROP(2, clock_frequency),
+	.baud_rate	= DT_INST_PROP(2, current_speed),
 	.clock_id	= KENDRYTE_CLOCK_UART2,
 };
 
-DEVICE_AND_API_INIT(uart_kendryte_2, CONFIG_KENDRYTE_UART_2_LABEL,
-		    uart_kendryte_init,
-		    NULL, &uart_kendryte_dev_cfg_2,
+DEVICE_AND_API_INIT(uart_kendryte_2, DT_INST_LABEL(2),
+		    &uart_kendryte_init,
+			NULL, &uart_kendryte_dev_cfg_2,
 		    PRE_KERNEL_1, CONFIG_KERNEL_INIT_PRIORITY_DEVICE,
 		    (void *)&uart_kendryte_driver_api);
 
 #endif /* CONFIG_UART_KENDRYTE_PORT_2 */
-
-#ifdef CONFIG_UART_KENDRYTE_PORT_3
-
-static const struct uart_kendryte_device_config uart_kendryte_dev_cfg_3 = {
-	.port		= CONFIG_KENDRYTE_UART_3_BASE_ADDR,
-	.sys_clk_freq	= CONFIG_KENDRYTE_UART_3_CLK_FREQ,
-	.baud_rate	= CONFIG_KENDRYTE_UART_3_CURRENT_SPEED,
-	.clock_id	= KENDRYTE_CLOCK_UART3,
-};
-
-DEVICE_AND_API_INIT(uart_kendryte_3, CONFIG_KENDRYTE_UART_3_LABEL,
-		    uart_kendryte_init,
-		    NULL, &uart_kendryte_dev_cfg_3,
-		    PRE_KERNEL_1, CONFIG_KERNEL_INIT_PRIORITY_DEVICE,
-		    (void *)&uart_kendryte_driver_api);
-
-#endif /* CONFIG_UART_KENDRYTE_PORT_3 */

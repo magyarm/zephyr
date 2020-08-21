@@ -96,25 +96,25 @@
 			label = "sysctl";
 			clock-controller;
 		};
-		uart1: serial@50210000 {
+		uart0: serial@50210000 {
 			compatible = "kendryte,uart";
 			reg = <0x50210000 0x10000>;
+			reg-names = "control";
+			label = "uart_0";
+			status = "disabled";
+		};
+		uart1: serial@50220000 {
+			compatible = "kendryte,uart";
+			reg = <0x50220000 0x10000>;
 			reg-names = "control";
 			label = "uart_1";
 			status = "disabled";
 		};
-		uart2: serial@50220000 {
-			compatible = "kendryte,uart";
-			reg = <0x50220000 0x10000>;
-			reg-names = "control";
-			label = "uart_2";
-			status = "disabled";
-		};
-		uart3: serial@50230000 {
+		uart2: serial@50230000 {
 			compatible = "kendryte,uart";
 			reg = <0x50230000 0x10000>;
 			reg-names = "control";
-			label = "uart_3";
+			label = "uart_2";
 			status = "disabled";
 		};
 		i2s0: i2s@50250000 {
